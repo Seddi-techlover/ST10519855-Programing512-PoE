@@ -1,5 +1,4 @@
 package com.mycompany.messagingapp;
-
 public class Login {
     
     

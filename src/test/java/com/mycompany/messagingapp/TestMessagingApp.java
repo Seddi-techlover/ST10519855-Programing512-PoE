@@ -1,5 +1,4 @@
 package com.mycompany.messagingapp;
-
 import com.mycompany.messagingapp.Login;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -8,12 +7,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class TestMessagingApp {
          // correct test data from assignment
         Login correctLogin = new Login("kyl_1", "Ch&&sec@ke99!!", "Kyle","Smith", "+278388968976");
         
         //incorrect test data from assignment is entered data is incorrect
         Login incorrectLogin = new Login("kyl!!!!!!", "password", "Kyle", "Smith", "03838968976");
+    
     
     public TestMessagingApp() {
     }
@@ -33,7 +34,6 @@ public class TestMessagingApp {
     @AfterEach
     public void tearDown() {
     }
-
     @Test
        public void testUserNameisCorrect(){
            assertTrue(correctLogin.checkUserName());

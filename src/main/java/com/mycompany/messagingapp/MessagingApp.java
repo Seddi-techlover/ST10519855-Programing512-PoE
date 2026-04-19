@@ -1,7 +1,7 @@
 package com.mycompany.messagingapp;
 import java.util.Scanner;
 
-public class messagingapp{
+public class MessagingApp{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         // Object for messagingapp
@@ -15,14 +15,20 @@ public class messagingapp{
         String userName = scanner.nextLine();
         System.out.println("Enter your password please:");
         String passWord = scanner.nextLine();
-        System.out.println("Enter your password please:");
-        String cellPhoneNumber = scanner.nextLine();
         System.out.println("Enter your cell phone number please:");
+        String cellPhoneNumber = scanner.nextLine();
         
         // object for login object with all details entered by the user
         System.out.println("===Login===");
         Login login = new Login(userName, passWord, firstName, lastName, cellPhoneNumber);
-        System.out.println(login.registerUser());
+        
+        System.out.println("Enter username to login please:");
+        String enteredUser = scanner.nextLine();
+        System.out.println("Enter password to login please:");
+        String enteredPass = scanner.nextLine();
+        
+        System.out.println(login.registerUser());// this will print the welcome message from my login class
+        System.out.println(login.returnLoginStatus(enteredUser,enteredPass));
     }
 }
     
