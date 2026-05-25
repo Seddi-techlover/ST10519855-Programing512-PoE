@@ -62,15 +62,21 @@ public class Login {
          
     public String registerUser(){// start of the register user this checks the username for correct format
         if (!checkUserName()){// if statment to check the users username is correct
-            return "Usermane not correctly formatted; please ensure" + "that your username contains an underscoreand is " + "no more than five charactrs long";
+            return "Usermane not correctly formatted; please ensure" +
+                    "that your username contains an underscoreand is " + 
+                    "no more than five charactrs long";
         } else  if (!checkPasswordComplexity()){
-           return "Password is incorrectly formatted; please ensure" + "that the password has eight characters," + "a capital letter, a number, and special character";   
+           return "Password is incorrectly formatted; please ensure" +
+                   "that the password has eight characters," + 
+                   "a capital letter, a number, and special character";   
         } else if (!checkCellPhoneNumber()){
             return  "Cell phone number incorrectly formatted or does not have international code e.g +2733...";
         } else {
             
         } 
-        return "Username captured and confirmed.\n" + "Password captured and confirmed.\n" + "Cell phone number captured and confirmed";
+        return "Username captured and confirmed.\n" +
+                "Password captured and confirmed.\n" +
+                "Cell phone number captured and confirmed";
     }// end of register user method
     
     
@@ -84,7 +90,7 @@ public class Login {
     
     public String returnLoginStatus(String enteredUser, String enteredPass){// start of LoginStatus method
         if (loginUser(enteredUser, enteredPass)){
-            return"Welcome" + firstName + "  "  + lastName + "it nice to see you again";// this welcomes the user after registering
+            return" Welcome " + firstName +  "  "  + lastName + " it  is nice to see you again ";// this welcomes the user after registering
         } else {
             return  "Username or password incorrect,please try again";
         }
