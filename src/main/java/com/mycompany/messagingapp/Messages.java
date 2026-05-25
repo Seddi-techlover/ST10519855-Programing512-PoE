@@ -58,8 +58,8 @@ public class Messages {
         if (recipientNumber != null &&(recipientNumber.startsWith("+27") || recipientNumber.startsWith("0"))){
             return "Cell phone number successfully captured.";
         } else {
-            return "Cell phone number is incorrectly formatted or does "
-                    + "not contain international code" + "Try again!";
+            return "Cell phone number is incorrect or no international code try again."
+                    ;
         }
     }
     
