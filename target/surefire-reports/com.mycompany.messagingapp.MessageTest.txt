@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.mycompany.messagingapp.MessageTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.198 s -- in com.mycompany.messagingapp.MessageTest
+Tests run: 12, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.629 s <<< FAILURE! -- in com.mycompany.messagingapp.MessageTest
+com.mycompany.messagingapp.MessageTest.testSearchByMessageID -- Time elapsed: 0.041 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "com.mycompany.messagingapp.Messages.messageIDs[i]" is null
+	at com.mycompany.messagingapp.Messages.searchByMessageID(Messages.java:155)
+	at com.mycompany.messagingapp.MessageTest.testSearchByMessageID(MessageTest.java:97)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+

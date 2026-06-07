@@ -44,11 +44,12 @@ public class MessagingApp{
             /*a while loop that runs till a the 
             the 3rd choice is chosen to end the program
             */
-            while(menuChoice !=3){
+            while(menuChoice !=4){
                 System.out.println("Choose an option:");
                 System.out.println("1) Send Message:");
                 System.out.println("2) Show recentlt sent messages:");
-                System.out.println("3) Quit:");
+                System.out.println("3) Show Stored messages:");
+                System.out.println("4) Quit:");
                 
                 menuChoice = scanner.nextInt();
                 scanner.nextLine();
@@ -57,7 +58,7 @@ public class MessagingApp{
                 case 1:
                     System.out.println("How may messages do wish to send:");
                     int size = scanner.nextInt();
-                    scanner.nextInt();
+                    scanner.nextLine();
                    
                     // an array to store the size of the input size
                     messaging = new Messages[size];
@@ -81,11 +82,16 @@ public class MessagingApp{
                         System.out.println("[Validation]" + messaging[i].checkRecipientCell(cell));
                         System.out.println("[Validation]" + messaging[i].checkMessageLength());
                         
-                       int actionChoice = 0;
-                        
-                        if(actionChoice == 3){
-                            messaging[i].storeMessage();
-                        }
+                        /* updating the menu to accomodate
+                        the disregarded messages and to acctually
+                        store the messages
+                        */
+                        System.out.println("1) Send Message");
+                        System.out.println("2) Disregarded Message");
+                        System.out.println("3) Store Message");
+                        int actionChoice = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println(messaging[i].SentMessgae(actionChoice));
                         
                         // to print the messages 
                         System.out.println("====Caputred Record Info====");
@@ -98,9 +104,14 @@ public class MessagingApp{
                        }
                        break;
                 case 2:
-                    System.out.println("Feature comming soon.");
+                    System.out.println("Comming soon.");
                     break;
                 case 3:
+                    if (messaging != null){
+                        System.out.println(messaging[0].displayReport());
+                    }
+                    break;
+                case 4:
                     System.out.println("Exiting QuickChat. Goodbye!");
                     break;
                 default:

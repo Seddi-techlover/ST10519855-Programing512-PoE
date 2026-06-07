@@ -11,7 +11,20 @@ public class Messages {
     private String recipientNumber;
     private String messageText;
     private String messageHash;
-
+    
+    // arrays to store different message types
+    private static String[] sentMessages = new String[100];
+    private static String[] disregardedMessages = new String[100];
+    private static String[] storedMessages = new String[100];
+    private static String[] messageHashes = new String[100];
+    private static String[] messageIDs = new String[100];
+    // counters to track how many are in each array
+    private static int sentCount = 0;
+    private static int disregardedCount = 0;
+    private static int storedCount = 0;
+    
+    
+    
     public Messages(String messageID, int numMessagesSent, String recipientNumber, String messageText) {
         this.messageID = generateRandomID();
         this.numMessagesSent = numMessagesSent;
@@ -84,14 +97,128 @@ public class Messages {
     */
     public String SentMessgae(int choice){
         if (choice  == 1){
-             totalMessageCounter++ ;
-             return "Message successfully sent.";
-        } else if (choice == 2){ 
+            // additions to the array
+            sentMessages[sentCount] = this.messageText;
+            messageHashes[sentCount] = this.messageHash;
+            messageHashes[sentCount] = this.messageID;
+            sentCount++;
+            totalMessageCounter++;
+            return "Message successfully sent.";
+        } else if (choice == 2) {
+            // addition to disregarded array
+            disregardedMessages[disregardedCount] = this.messageText;
+            disregardedCount++;
             return "Press 0 to delete the message.";
-        } else if (choice == 3){
+        } else if (choice == 3) {
+            // addition to stored messages array
+            storedMessages[storedCount] = this.messageText;
+            storedCount++;
+            storeMessage();
             return "Message successfully stored.";
-        }             
+        }
         return "Invalid selection.";
+
+    }
+    
+    public String displaySentMessages(){
+        // to check there are any sent messages
+        if (sentCount == 0){
+            return "No messages sent yet.";
+        }
+        
+        String results = ""; /* this will loop through
+        all sent messages*/
+        for (int i = 0; i < sentCount; i++ ){
+        results += "Message" + (i + 1) + sentMessages[i] + "\n";
+     }
+        return results;
+  }
+    public String longestMessage(){
+        // checking if there are any sent messages
+        if (sentCount == 0){
+            return "No mesages sent yet.";
+        }
+        // i start to assume the first message is long
+        String longest = sentMessages[0];
+        // looping through and comparing each message
+        for (int i = 1; i < sentCount; i++){
+          if (sentMessages[i].length() > longest.length()){
+               longest = sentMessages[i];
+          }
+        }
+        return "Longest message:" + longest;
+    }
+    
+    public String searchByMessageID(String searchID){
+        //loop through all message IDs
+        for (int i = 0; i < sentCount; i++){
+            if (messageIDs[i].equals(searchID)){
+                return "Recipient:" + recipientNumber +
+                       "Message:" + sentMessages[i];
+            }
+        }
+        return "Message ID not found.";
+    }
+    
+   public String searchByRecipient(String searchRecipient){
+       // store all messages found for this recipient
+       String results = "";
+    
+      // loop through sent messages
+      for (int i = 0; i < sentCount; i++){
+          if(messageIDs[i] != null && recipientNumber.equals(searchRecipient)){
+              results += sentMessages[i] + "\n";
+          }
+      }
+      // loop through stored messages
+      for(int i = 0; i < storedCount; i++){
+          if(storedMessages[i] != null){
+              results += storedMessages[i] + "\n";
+          }
+      }
+      // if nothing was found
+      if(results.isEmpty()){
+          return "No messages found for this recipient.";
+        }
+        return results;
+      
+      }
+    
+    public String deletMessage(String searchHash){
+        // loop through message hashes
+        for(int i = 0; i < sentCount; i++){
+            if(messageHashes[i] != null && messageHashes[i].equals( searchHash)){
+                // saves the message text before deleting
+                String deletedMessage = sentMessages[i];
+                
+                //remove by setting null
+                sentMessages[i] = null;
+                messageHashes[i] = null;
+                messageIDs[i] = null;
+                
+                return "Message:" + deletedMessage + "Successfully deleted.";
+            }
+        }
+        return "Message hash not found.";
+    }
+    
+    public String displayReport(){
+        // checking if there are any sent messages
+        if(sentCount == 0){
+            return "No messages sent yet.";
+        }
+         
+        String report = "== Message Report ==";
+        // loop through all sent messages
+        for(int i = 0; i < sentCount; i++){
+            if(sentMessages[i] != null){
+                report += "Message:" + (i + 1) + ":\n" +
+                          "Message Hash:" + messageHashes[i] + "\n" 
+                        + "Recipient:" + recipientNumber + "\n" +
+                          "Message:" + sentMessages[i];
+            }
+        }
+        return report;
     }
     
     /*prints message details and displays the ID, the Hash and 
@@ -136,13 +263,41 @@ public class Messages {
     }  
 
     private String createMessageHash() {
-       if (this.messageText != null && !this.messageText.trim().isBlank()){
-            String[] words = this.messageText.split(" ");
-            return words[0] + "_" + (int)(Math.random()*1000);
-        }
-        return "No_Hash"; 
+      // get first 2 digits of the message ID
+      String firstTwoDigits = messageID.substring(0,2);
+      // split message into words
+      String[] words = messageText.split(" ");
+      // get first and last word
+      String firstWord = words[0];
+      String lastWord = words[words.length - 1];
+      // combine and make uppercase
+      String hash = firstTwoDigits + ":" + numMessagesSent 
+              + ":" + firstWord + lastWord;
+        return hash.toUpperCase();
+              
         
     }
+
+    public String getMessageID() {
+        return messageID;
+    }
+
+    public int getNumMessagesSent() {
+        return numMessagesSent;
+    }
+
+    public String getRecipientNumber() {
+        return recipientNumber;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public String getMessageHash() {
+        return messageHash;
+    }
+    
     
     
     
