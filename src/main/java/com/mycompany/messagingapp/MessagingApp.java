@@ -91,8 +91,17 @@ public class MessagingApp{
                         System.out.println("3) Store Message");
                         int actionChoice = scanner.nextInt();
                         scanner.nextLine();
-                        System.out.println(messaging[i].SentMessgae(actionChoice));
-                        
+                        if (actionChoice == 2) {
+                              System.out.println(messaging[i].SentMessgae(2));
+                              System.out.println("Press 0 to delete the message:");
+                              String deleteChoice = scanner.nextLine(); // ← String not int
+                                 if (deleteChoice.equals("0")) {
+                                     String hash = messaging[i].getMessageHash();
+                                     System.out.println(messaging[i].deleteMessage(hash));
+                                   }
+                               } else {
+                                    System.out.println(messaging[i].SentMessgae(actionChoice));
+                                }
                         // to print the messages 
                         System.out.println("====Caputred Record Info====");
                         System.out.println(messaging[i].printMessagaes());                        
@@ -108,7 +117,40 @@ public class MessagingApp{
                     break;
                 case 3:
                     if (messaging != null){
-                        System.out.println(messaging[0].displayReport());
+                        System.out.println("==Manage Messages==");
+                        System.out.println("1) Search by Message ID:");
+                        System.out.println("2) Search by Recipient Cell:");
+                        System.out.println("3) Delete by Message Hash:");
+                        System.out.println("4) Display Report:");
+                        System.out.println("Choose an option:");
+                        int manageChoice = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        switch(manageChoice){
+                            case 1:
+                                System.out.println("Enter Message ID to search:");
+                                String searchID = scanner.nextLine();
+                                System.out.println(messaging[0].searchByMessageID(searchID));
+                                break;
+                            case 2:
+                                System.out.println("Enter Recipient number to search:");
+                                String searchRecipient = scanner.nextLine();
+                                System.out.println(messaging[0].searchByRecipient(searchRecipient));
+                                break;
+                            case 3:
+                                System.out.println("Enter Message hash to delete:");
+                                String searchHash = scanner.nextLine();
+                                System.out.println(messaging[0].deleteMessage(searchHash));
+                                break;
+                            case 4:
+                                System.out.println(messaging[0].displayReport());
+                                break;
+                            default:
+                                System.out.println("Invalid option");
+                        }
+                   }else {
+                        System.out.println("No messages found.");
+                        break;
                     }
                     break;
                 case 4:

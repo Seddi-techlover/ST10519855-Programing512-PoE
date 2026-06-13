@@ -15,9 +15,12 @@ public class Messages {
     // arrays to store different message types
     private static String[] sentMessages = new String[100];
     private static String[] disregardedMessages = new String[100];
+    private static String[] allMessages = new String[100];
     private static String[] storedMessages = new String[100];
     private static String[] messageHashes = new String[100];
     private static String[] messageIDs = new String[100];
+    private static String[] recipients = new String[100];
+    private static int totalStoredCount = 0;// to track all the the arrays
     // counters to track how many are in each array
     private static int sentCount = 0;
     private static int disregardedCount = 0;
@@ -95,29 +98,38 @@ public class Messages {
     /*message handeling method bassed on the user input
     which they select a choice between 1,2 or 3
     */
-    public String SentMessgae(int choice){
-        if (choice  == 1){
-            // additions to the array
-            sentMessages[sentCount] = this.messageText;
-            messageHashes[sentCount] = this.messageHash;
-            messageHashes[sentCount] = this.messageID;
-            sentCount++;
-            totalMessageCounter++;
-            return "Message successfully sent.";
+     public String SentMessgae(int choice){
+       if (choice == 1) {
+           sentMessages[sentCount] = this.messageText;
+           allMessages[totalStoredCount] = this.messageText;
+           messageHashes[totalStoredCount] = this.messageHash;
+           messageIDs[totalStoredCount] = this.messageID;
+           recipients[totalStoredCount] = this.recipientNumber;
+           sentCount++;
+           totalStoredCount++;
+           totalMessageCounter++;
+             return "Message successfully sent.";
         } else if (choice == 2) {
-            // addition to disregarded array
             disregardedMessages[disregardedCount] = this.messageText;
+            allMessages[totalStoredCount] = this.messageText;
+            messageHashes[totalStoredCount] = this.messageHash;
+            messageIDs[totalStoredCount] = this.messageID;
+            recipients[totalStoredCount] = this.recipientNumber;
             disregardedCount++;
-            return "Press 0 to delete the message.";
+            totalStoredCount++;
+             return "Press 0 to delete the message.";
         } else if (choice == 3) {
-            // addition to stored messages array
             storedMessages[storedCount] = this.messageText;
+            allMessages[totalStoredCount] = this.messageText;
+            messageHashes[totalStoredCount] = this.messageHash;
+            messageIDs[totalStoredCount] = this.messageID;
+            recipients[totalStoredCount] = this.recipientNumber;
             storedCount++;
+            totalStoredCount++;
             storeMessage();
-            return "Message successfully stored.";
-        }
-        return "Invalid selection.";
-
+             return "Message successfully stored.";
+      }
+        return null;
     }
     
     public String displaySentMessages(){
@@ -149,73 +161,57 @@ public class Messages {
         return "Longest message:" + longest;
     }
     
-    public String searchByMessageID(String searchID){
-        //loop through all message IDs
-        for (int i = 0; i < sentCount; i++){
-            if (messageIDs[i].equals(searchID)){
-                return "Recipient:" + recipientNumber +
-                       "Message:" + sentMessages[i];
-            }
+    public String searchByMessageID(String searchID) {
+    for (int i = 0; i < sentCount; i++) {
+        if (messageIDs[i] != null && messageIDs[i].equals(searchID)) {
+            return "Recipient: " + recipients[i] + "\nMessage: " + allMessages[i];
         }
-        return "Message ID not found.";
     }
+    return "Message ID not found.";
+}
     
-   public String searchByRecipient(String searchRecipient){
-       // store all messages found for this recipient
-       String results = "";
-    
-      // loop through sent messages
-      for (int i = 0; i < sentCount; i++){
-          if(messageIDs[i] != null && recipientNumber.equals(searchRecipient)){
-              results += sentMessages[i] + "\n";
-          }
-      }
-      // loop through stored messages
-      for(int i = 0; i < storedCount; i++){
-          if(storedMessages[i] != null){
-              results += storedMessages[i] + "\n";
-          }
-      }
-      // if nothing was found
-      if(results.isEmpty()){
-          return "No messages found for this recipient.";
+    public String searchByRecipient(String searchRecipient) {
+         String result = "";
+             for (int i = 0; i < totalStoredCount; i++) {
+                if (recipients[i] != null && recipients[i].equals(searchRecipient)) {
+                  result += allMessages[i] + "\n";
         }
-        return results;
-      
-      }
-    
-    public String deletMessage(String searchHash){
-        // loop through message hashes
-        for(int i = 0; i < sentCount; i++){
-            if(messageHashes[i] != null && messageHashes[i].equals( searchHash)){
-                // saves the message text before deleting
-                String deletedMessage = sentMessages[i];
-                
-                //remove by setting null
-                sentMessages[i] = null;
-                messageHashes[i] = null;
-                messageIDs[i] = null;
-                
-                return "Message:" + deletedMessage + "Successfully deleted.";
-            }
-        }
-        return "Message hash not found.";
     }
+    if (result.isEmpty()) {
+        return "No messages found for this recipient.";
+    }
+    return result;
+}
+    
+     
+    public String deleteMessage(String searchHash) {
+    for (int i = 0; i < totalStoredCount; i++) {
+        if (messageHashes[i] != null && messageHashes[i].equals(searchHash)) {
+            String deleted = allMessages[i];
+            allMessages[i] = null;
+            messageHashes[i] = null;
+            messageIDs[i] = null;
+            recipients[i] = null;
+            return "Message: \"" + deleted + "\" successfully deleted.";
+        }
+    }
+    return "Message hash not found.";
+}
     
     public String displayReport(){
         // checking if there are any sent messages
-        if(sentCount == 0){
+        if(totalStoredCount == 0){
             return "No messages sent yet.";
         }
          
         String report = "== Message Report ==";
-        // loop through all sent messages
-        for(int i = 0; i < sentCount; i++){
-            if(sentMessages[i] != null){
+        // loop through all messages
+        for(int i = 0; i < totalStoredCount; i++){
+            if(allMessages[i] != null){
                 report += "Message:" + (i + 1) + ":\n" +
                           "Message Hash:" + messageHashes[i] + "\n" 
-                        + "Recipient:" + recipientNumber + "\n" +
-                          "Message:" + sentMessages[i];
+                        + "Recipient:" + recipients[i] + "\n" +
+                          "Message:" + allMessages[i];
             }
         }
         return report;

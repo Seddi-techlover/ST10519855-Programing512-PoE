@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
  
-public class MessageTest {
+public class MessagesTest {
+    
+    
     @Test
     public void testMessageLengthCorrect(){
         String validText = "Hi Mike, can you join us for dinner tonight?";
@@ -116,7 +118,7 @@ public class MessageTest {
           msg2.SentMessgae(1);
           // try to delete using the hash
           String hash = msg2.getMessageHash();
-          String result = msg2.deletMessage(hash);
+          String result = msg2.deleteMessage(hash);
     
     // just check it returns a valid string response
     assertNotNull(result);
@@ -139,7 +141,7 @@ public class MessageTest {
          assertEquals("Press 0 to delete the message.", result);
 }
     
-    public MessageTest() {
+    public MessagesTest() {
        
         
     }
